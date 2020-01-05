@@ -5,6 +5,7 @@ import Spinner from "../elements/Spinner";
 import HeroImage from "../elements/HeroImage";
 import FourColGrid from "../elements/FourColGrid";
 import LoadMoreBtn from "../elements/LoadMoreBtn";
+import MovieThumb from "../elements/MovieThumb"
 import {
   API_URL,
   API_KEY,
@@ -12,6 +13,7 @@ import {
   BACKDROP_SIZE,
   POSTER_SIZE
 } from "../../config";
+import { element } from "prop-types";
 
 class Home extends Component {
   state = {
@@ -46,7 +48,7 @@ class Home extends Component {
 
   searchItems = searchTerm => {
     console.log(searchTerm);
-    
+
     let endpoint = "";
     this.setState({
       movies: [],
@@ -86,10 +88,31 @@ class Home extends Component {
               title={this.state.heroImage.original_title}
               text={this.state.heroImage.overview}
             />
-            <SearchBar callback={this.searchItems}  />
+            <SearchBar callback={this.searchItems} />
           </div>
         ) : null}
-        <FourColGrid />
+        <div className="rmdb-home-grid">
+          <FourColGrid
+            header={this.state.searchTerm ? "Search Result" : "Popolar Movies"}
+            loading={this.state.loading}
+          >
+            {this.state.movies.map((element, i) => {
+              return (
+                <MovieThumb
+                  key={i}
+                  clickable={true}
+                  image={
+                    element.poster_path
+                      ? `${IMAGE_BASE_URL}${POSTER_SIZE}${element.poster_path}`
+                      : "./images/no_image.jpg"
+                  }
+                  movieId={element.id}
+                  movieName={element.original_title}
+                />
+              );
+            })}
+          </FourColGrid>
+        </div>
         <Spinner />
         <LoadMoreBtn />
       </div>
