@@ -4,6 +4,7 @@ import SearchBar from "../elements/SearchBar";
 import Spinner from "../elements/Spinner";
 import HeroImage from "../elements/HeroImage";
 import FourColGrid from "../elements/FourColGrid";
+import LoadMoreBtn from "../elements/LoadMoreBtn";
 import {
   API_URL,
   API_KEY,
@@ -44,11 +45,13 @@ class Home extends Component {
   }
 
   searchItems = searchTerm => {
+    console.log(searchTerm);
+    
     let endpoint = "";
     this.setState({
       movies: [],
       loading: true,
-      searchTerm 
+      searchTerm
     });
 
     if (searchTerm === "") {
@@ -83,11 +86,12 @@ class Home extends Component {
               title={this.state.heroImage.original_title}
               text={this.state.heroImage.overview}
             />
-            <SearchBar />
+            <SearchBar callback={this.searchItems}  />
           </div>
         ) : null}
         <FourColGrid />
         <Spinner />
+        <LoadMoreBtn />
       </div>
     );
   }

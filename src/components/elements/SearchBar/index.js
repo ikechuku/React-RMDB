@@ -7,6 +7,14 @@ class SearchBar extends Component {
     value: ""
   };
 
+  doSearch = event => {
+    this.setState({ value: event.target.value });
+    clearTimeout(this.timeout);
+
+    this.timeout = setTimeout(() => {
+      this.props.callback(this.state.value);
+    }, 500);
+  };
   render() {
     return (
       <div className="rmdb-searchbar">
