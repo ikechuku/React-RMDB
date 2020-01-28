@@ -5,7 +5,7 @@ import Spinner from "../elements/Spinner";
 import HeroImage from "../elements/HeroImage";
 import FourColGrid from "../elements/FourColGrid";
 import LoadMoreBtn from "../elements/LoadMoreBtn";
-import MovieThumb from "../elements/MovieThumb"
+import MovieThumb from "../elements/MovieThumb";
 import {
   API_URL,
   API_KEY,
@@ -13,7 +13,6 @@ import {
   BACKDROP_SIZE,
   POSTER_SIZE
 } from "../../config";
-import { element } from "prop-types";
 
 class Home extends Component {
   state = {
@@ -31,7 +30,7 @@ class Home extends Component {
       .then(result => {
         this.setState({
           movies: [...this.state.movies, ...result.results],
-          heroImage: this.state.heroImage || result.results[0],
+          heroImage: result.results[0],
           loading: false,
           currentPage: result.page,
           totalPages: result.total_pages
@@ -57,9 +56,9 @@ class Home extends Component {
     });
 
     if (searchTerm === "") {
-      endpoint = `${API_URL}movie/popular?api_key=${API_KEY}&language=en-US&pages=1`;
+      endpoint = `${API_URL}movie/popular?api_key=${API_KEY}&language=en-US&page=1`;
     } else {
-      endpoint = `${API_URL}search/movie?api_key=${API_KEY}&language=en-US&query=${searchTerm}&pages=1`;
+      endpoint = `${API_URL}search/movie?api_key=${API_KEY}&language=en-US&query=${searchTerm}`;
     }
     this.fetchItems(endpoint);
   };
@@ -69,13 +68,15 @@ class Home extends Component {
     this.setState({ loading: true });
 
     if (this.state.searchTerm === "") {
-      endpoint = `${API_URL}movie/popular?api_key=${API_KEY}&language=en-US&pages=${this
+      endpoint = `${API_URL}movie/popular?api_key=${API_KEY}&language=en-US&page=${this
         .state.currentPage + 1}`;
     } else {
       endpoint = `${API_URL}search/movie?api_key=${API_KEY}&language=en-US&query=${
         this.state.searchTerm
-      }&pages=${this.state.currentPage + 1}`;
+      }&page=${this.state.currentPage + 1}`;
     }
+
+    this.fetchItems(endpoint);
   };
 
   render() {
@@ -93,7 +94,7 @@ class Home extends Component {
         ) : null}
         <div className="rmdb-home-grid">
           <FourColGrid
-            header={this.state.searchTerm ? "Search Result" : "Popolar Movies"}
+            header={this.state.searchTerm ? "Search Result" : "Popular Movies"}
             loading={this.state.loading}
           >
             {this.state.movies.map((element, i) => {
@@ -113,8 +114,11 @@ class Home extends Component {
             })}
           </FourColGrid>
         </div>
-        <Spinner />
-        <LoadMoreBtn />
+        {this.state.loading ? <Spinner /> : null}
+        {this.state.currentPage <= this.state.totalPages &&
+        !this.state.loading ? (
+          <LoadMoreBtn text="LoadMore" onClick={this.loadMoreItems} />
+        ) : null}
       </div>
     );
   }

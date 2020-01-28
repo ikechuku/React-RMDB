@@ -1,4 +1,4 @@
- import React from "react";
+import React from "react";
 import "./FourColGrid.css";
 
 const FourColGrid = props => {
@@ -15,8 +15,7 @@ const FourColGrid = props => {
 
   return (
     <div className="rmdb-grid">
-      {props.header & !props.loading ? <h1>{props.header}Ahead</h1> : null}
-
+      {props.header && !props.loading ? <h1>{props.header}</h1> : null}
       <div className="rmdb-grid-content">{renderElements()}</div>
     </div>
   );
