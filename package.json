@@ -1,5 +1,5 @@
 {
-  "name": "react_movie_db_course",
+  "name": "mymovieguide",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -16,7 +16,6 @@
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
   },
-  "homepage": "http://www.weibenfalk.com/react_rmdb/",
   "browserslist": {
     "production": [
       ">0.2%",
